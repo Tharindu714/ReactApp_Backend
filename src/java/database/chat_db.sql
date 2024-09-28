@@ -63,11 +63,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   KEY `fk_user_user_status_idx` (`user_status_id`),
   CONSTRAINT `fk_user_user_status` FOREIGN KEY (`user_status_id`) REFERENCES `user_status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table chanakaelect_chat.user: ~0 rows (approximately)
 REPLACE INTO `user` (`id`, `mobile`, `first_name`, `last_name`, `password`, `registered_date_time`, `user_status_id`) VALUES
-	(1, '0766135782', 'Delta', 'Codex Graphics', 'dcGraphs2025', '2024-09-28 03:43:35', 1);
+	(1, '0766135782', 'Delta', 'Codex Graphics', 'dcGraphs2025', '2024-09-28 03:43:35', 2),
+	(2, '0785693217', 'Amanda', 'Diaz', 'Amanda@234', '2024-09-29 03:07:40', 2),
+	(3, '0762358912', 'Sadeesha ', 'Nilakshini', 'Sadee@325Nilakshi', '2024-09-29 03:10:30', 2),
+	(4, '0789632147', 'Puppy', 'Puff', 'Puppy2354@Puff', '2024-09-29 03:22:47', 2);
 
 -- Dumping structure for table chanakaelect_chat.user_status
 CREATE TABLE IF NOT EXISTS `user_status` (
@@ -78,8 +81,8 @@ CREATE TABLE IF NOT EXISTS `user_status` (
 
 -- Dumping data for table chanakaelect_chat.user_status: ~0 rows (approximately)
 REPLACE INTO `user_status` (`id`, `name`) VALUES
-	(1, 'Active'),
-	(2, 'Inactive');
+	(1, 'Online'),
+	(2, 'Offline');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
