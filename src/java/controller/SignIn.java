@@ -3,9 +3,7 @@ package controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import entity.User;
-import entity.User_Status;
 import java.io.IOException;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,47 +20,51 @@ public class SignIn extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Gson gson = new Gson();
-        JsonObject responseJson = new JsonObject();
-        responseJson.addProperty("Success", false);
+        try {
+            Gson gson = new Gson();
+            JsonObject responseJson = new JsonObject();
+            responseJson.addProperty("success", false);
 
-        String mobile = request.getParameter("mobile");
-        String password = request.getParameter("password");
+            JsonObject requestJson = gson.fromJson(request.getReader(), JsonObject.class);
+            String mobile = requestJson.get("mobile").getAsString();
+            String password = requestJson.get("password").getAsString();
 
-        if (mobile.isEmpty()) {
-            responseJson.addProperty("message", "Please Fill Mobile Number");
 
-        } else if (!Validations.isMobileNumberValid(mobile)) {
-            responseJson.addProperty("message", "Invalid Mobile Number");
+            if (mobile.isEmpty()) {
+                responseJson.addProperty("message", "Please Fill Mobile Number");
 
-        } else if (password.isEmpty()) {
-            responseJson.addProperty("message", "Please Fill Your Password");
+            } else if (!Validations.isMobileNumberValid(mobile)) {
+                responseJson.addProperty("message", "Invalid Mobile Number");
 
-        } else {
-            Session session = HibernateUtil.getSessionFactory().openSession();
-
-            Criteria criteria1 = session.createCriteria(User.class);
-            criteria1.add(Restrictions.eq("mobile", mobile));
-            criteria1.add(Restrictions.eq("password", password));
-
-            if (!criteria1.list().isEmpty()) {
-                User user = (User) criteria1.uniqueResult();
-
-                responseJson.addProperty("Success", true);
-                responseJson.addProperty("message", "SignIN Success");
-                responseJson.add("user", gson.toJsonTree(user));
+            } else if (password.isEmpty()) {
+                responseJson.addProperty("message", "Please Fill Your Password");
 
             } else {
-                responseJson.addProperty("message", "Invalid Credentials");
+                Session session = HibernateUtil.getSessionFactory().openSession();
+
+                Criteria criteria1 = session.createCriteria(User.class);
+                criteria1.add(Restrictions.eq("mobile", mobile));
+                criteria1.add(Restrictions.eq("password", password));
+
+                if (!criteria1.list().isEmpty()) {
+                    User user = (User) criteria1.uniqueResult();
+
+                    responseJson.addProperty("success", true);
+                    responseJson.addProperty("message", "Let's Chat!");
+                    responseJson.add("user", gson.toJsonTree(user));
+
+                } else {
+                    responseJson.addProperty("message", "Invalid Credentials");
+                }
+                
+                session.close();
             }
 
-            responseJson.addProperty("Success", true);
-            responseJson.addProperty("message", "Registration Complete");
-            session.close();
+            response.setContentType("application/json");
+            response.getWriter().write(gson.toJson(responseJson));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        response.setContentType("application/json");
-        response.getWriter().write(gson.toJson(responseJson));
     }
-
 }

@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `chat_status` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table chanakaelect_chat.chat_status: ~0 rows (approximately)
+-- Dumping data for table chanakaelect_chat.chat_status: ~2 rows (approximately)
 REPLACE INTO `chat_status` (`id`, `name`) VALUES
 	(1, 'Seen'),
 	(2, 'Delivered'),
@@ -63,14 +63,20 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   KEY `fk_user_user_status_idx` (`user_status_id`),
   CONSTRAINT `fk_user_user_status` FOREIGN KEY (`user_status_id`) REFERENCES `user_status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table chanakaelect_chat.user: ~0 rows (approximately)
+-- Dumping data for table chanakaelect_chat.user: ~4 rows (approximately)
 REPLACE INTO `user` (`id`, `mobile`, `first_name`, `last_name`, `password`, `registered_date_time`, `user_status_id`) VALUES
 	(1, '0766135782', 'Delta', 'Codex Graphics', 'dcGraphs2025', '2024-09-28 03:43:35', 2),
-	(2, '0785693217', 'Amanda', 'Diaz', 'Amanda@234', '2024-09-29 03:07:40', 2),
-	(3, '0762358912', 'Sadeesha ', 'Nilakshini', 'Sadee@325Nilakshi', '2024-09-29 03:10:30', 2),
-	(4, '0789632147', 'Puppy', 'Puff', 'Puppy2354@Puff', '2024-09-29 03:22:47', 2);
+	(5, '0742356980', 'Black ', 'Widow ', 'Black@Widow123', '2024-10-01 03:17:26', 2),
+	(6, '0741265893', 'Blue ', 'Beetle ', 'BlueBee@2023', '2024-10-01 03:30:02', 2),
+	(7, '0786932147', 'Smart', 'Hulk ', 'WiseHull@345', '2024-10-01 03:31:02', 2),
+	(8, '0712367845', 'Wade The ', 'Deadpool', 'Wade&Deadpool2025', '2024-10-01 03:32:21', 2),
+	(9, '0726935809', 'The Real ', 'Bat Man ', 'RealBat@2024', '2024-10-01 03:34:10', 2),
+	(10, '0756935809', 'Wonder', 'Woman', 'GalGab@WW2', '2024-10-01 03:35:18', 2),
+	(11, '0776935809', 'Barry The Real', 'Flash ', 'Flash@2025', '2024-10-01 03:37:28', 2),
+	(12, '0776943322', 'Peter ', 'Parker Spidey', 'PPSpider@67', '2024-10-01 03:39:04', 2),
+	(13, '0781441587', 'Venom', 'Itself', 'Venom@345', '2024-10-01 03:40:20', 2);
 
 -- Dumping structure for table chanakaelect_chat.user_status
 CREATE TABLE IF NOT EXISTS `user_status` (
@@ -79,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `user_status` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table chanakaelect_chat.user_status: ~0 rows (approximately)
+-- Dumping data for table chanakaelect_chat.user_status: ~2 rows (approximately)
 REPLACE INTO `user_status` (`id`, `name`) VALUES
 	(1, 'Online'),
 	(2, 'Offline');
