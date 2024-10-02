@@ -7,7 +7,6 @@ import entity.User_Status;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
@@ -32,7 +31,7 @@ public class SignUp extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
         JsonObject responseJson = new JsonObject();
-        responseJson.addProperty("Success", false);
+        responseJson.addProperty("success", false);
 
         String mobile = request.getParameter("mobile");
         String firstName = request.getParameter("firstName");
@@ -94,7 +93,7 @@ public class SignUp extends HttpServlet {
                 }
             }
 
-            responseJson.addProperty("Success", true);
+            responseJson.addProperty("success", true);
             responseJson.addProperty("message", "Registration Complete");
             session.close();
         }
