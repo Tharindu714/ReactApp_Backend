@@ -98,7 +98,7 @@ public class LoadHomeData extends HttpServlet {
                     //No Conversation Found
                     jsonchatItem.addProperty("message", "Let's Start new Conversation !!");
                     jsonchatItem.addProperty("dateTime", dateFormat.format(user.getRegistered_date_time()));
-                    jsonchatItem.addProperty("chat_status_id", 1);
+                    jsonchatItem.addProperty("chat_status_id", 2);
                 } else {
                     jsonchatItem.addProperty("message", chatList.get(0).getMessage());
                     jsonchatItem.addProperty("dateTime", dateFormat.format(chatList.get(0).getDate_time()));

@@ -83,11 +83,7 @@ public class SignUp extends HttpServlet {
                 if (avatarImage.getSubmittedFileName() != null) {
                     String serverPath = request.getServletContext().getRealPath("");
                     String avaterImagePath = serverPath.replace("build" + File.separator + "web", "web");
-
-                    File folder = new File(avaterImagePath + File.separator + "Avater" + File.separator + firstName + "_" + lastName);
-                    folder.mkdir();
-
-                    File file1 = new File(folder, firstName + "_image.png");
+                    File file1 = new File(avaterImagePath, "Avater" + File.separator + firstName + "_image.png");
                     InputStream inputStream = avatarImage.getInputStream();
                     Files.copy(inputStream, file1.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 }
