@@ -28,7 +28,7 @@ public class LoadHomeData extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
         JsonObject responseJson = new JsonObject();
-        responseJson.addProperty("status", false);
+        responseJson.addProperty("success", false);
         responseJson.addProperty("message", "Unable to process your contact");
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -52,7 +52,6 @@ public class LoadHomeData extends HttpServlet {
             List<User> otherUserList = criteria1.list();
 
             JsonArray jsonChatArray = new JsonArray();
-
             for (User otherUser : otherUserList) {
                 //Start of Get Chats
                 Criteria criteria2 = session.createCriteria(Chat.class);
@@ -72,24 +71,24 @@ public class LoadHomeData extends HttpServlet {
                 criteria2.setMaxResults(1);
 
                 //Create Chat  item JSON to send frontend data
-                JsonObject chatItem = new JsonObject();
-                chatItem.addProperty("other_user_id", otherUser.getId());
-                chatItem.addProperty("other_user_mobile", otherUser.getMobile());
-                chatItem.addProperty("other_user_name", otherUser.getFirst_name() + " " + otherUser.getLast_name());
-                chatItem.addProperty("other_user_status", otherUser.getUser_Status().getId());
+                JsonObject jsonchatItem = new JsonObject();
+                jsonchatItem.addProperty("other_user_id", otherUser.getId());
+                jsonchatItem.addProperty("other_user_mobile", otherUser.getMobile());
+                jsonchatItem.addProperty("other_user_name", otherUser.getFirst_name() + " " + otherUser.getLast_name());
+                jsonchatItem.addProperty("Imgname", otherUser.getFirst_name());
+                jsonchatItem.addProperty("other_user_status", otherUser.getUser_Status().getId());
 
                 //Check Avater Image
                 String serverPath = request.getServletContext().getRealPath("");
-                String avaterImagePath = serverPath + "build" + File.separator + "web";
-                String folder = avaterImagePath + File.separator + "Avater" + File.separator + otherUser.getFirst_name() + " " + otherUser.getLast_name() + ".png";
-                File OtherUserImage = new File(folder + otherUser.getFirst_name() + "_" + otherUser.getLast_name() + "_image.png");
+                String otherUserImagePath = serverPath + File.separator + "Avater" + File.separator + otherUser.getFirst_name() + "_image.png";
+                File OtherUserImage = new File(otherUserImagePath);
 
                 if (OtherUserImage.exists()) {
                     //avatar Image found
-                    chatItem.addProperty("avater_image_found", true);
+                    jsonchatItem.addProperty("avater_image_found", true);
                 } else {
-                    chatItem.addProperty("avater_image_found", false);
-                    chatItem.addProperty("other_user_avatar_letter", otherUser.getFirst_name().charAt(0) + "" + otherUser.getLast_name().charAt(0));
+                    jsonchatItem.addProperty("avater_image_found", false);
+                    jsonchatItem.addProperty("other_user_avatar_letter", otherUser.getFirst_name().charAt(0) + "" + otherUser.getLast_name().charAt(0));
                 }
                 //get Chat List
                 List<Chat> chatList = criteria2.list();
@@ -97,27 +96,22 @@ public class LoadHomeData extends HttpServlet {
 
                 if (chatList.isEmpty()) {
                     //No Conversation Found
-                    chatItem.addProperty("message", "Let's Start new Conversation !!");
-                    chatItem.addProperty("dateTime", dateFormat.format(user.getRegistered_date_time()));
-                    chatItem.addProperty("chat_status_id", 1);
+                    jsonchatItem.addProperty("message", "Let's Start new Conversation !!");
+                    jsonchatItem.addProperty("dateTime", dateFormat.format(user.getRegistered_date_time()));
+                    jsonchatItem.addProperty("chat_status_id", 1);
                 } else {
-                    chatItem.addProperty("message", chatList.get(0).getMessage());
-                    chatItem.addProperty("dateTime", dateFormat.format(chatList.get(0).getDate_time()));
-                    chatItem.addProperty("chat_status_id", chatList.get(0).getChat_Status().getId());
+                    jsonchatItem.addProperty("message", chatList.get(0).getMessage());
+                    jsonchatItem.addProperty("dateTime", dateFormat.format(chatList.get(0).getDate_time()));
+                    jsonchatItem.addProperty("chat_status_id", chatList.get(0).getChat_Status().getId());
                 }
                 //get Last Conversation
-                jsonChatArray.add(chatItem);
+                jsonChatArray.add(jsonchatItem);
 
             }
-            //Using Projections will remove all user chats
-            //criteria2.setProjection(Projections.distinct(Projections.property("")));
-
             //Send User
-            responseJson.addProperty("status", true);
-            responseJson.addProperty("message", "Success");
-            responseJson.addProperty("user", gson.toJson(user));
-            responseJson.addProperty("otherUserList", gson.toJson(otherUserList));
-            responseJson.addProperty("jsonChatArray", gson.toJson(jsonChatArray));
+            responseJson.addProperty("success", true);
+            responseJson.addProperty("message", "success");
+            responseJson.add("jsonChatArray", gson.toJsonTree(jsonChatArray));
 
             session.beginTransaction().commit();
             session.close();

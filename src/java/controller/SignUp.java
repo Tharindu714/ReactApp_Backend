@@ -64,7 +64,7 @@ public class SignUp extends HttpServlet {
             criteria1.add(Restrictions.eq("mobile", mobile));
 
             if (!criteria1.list().isEmpty()) {
-            responseJson.addProperty("message", "Mobile Number already Used");
+                responseJson.addProperty("message", "Mobile Number already Used");
 
             } else {
                 User user = new User();
@@ -84,10 +84,10 @@ public class SignUp extends HttpServlet {
                     String serverPath = request.getServletContext().getRealPath("");
                     String avaterImagePath = serverPath.replace("build" + File.separator + "web", "web");
 
-                    File folder = new File(avaterImagePath + File.separator + "Avater" + File.separator + firstName + " " + lastName + ".png");
+                    File folder = new File(avaterImagePath + File.separator + "Avater" + File.separator + firstName + "_" + lastName);
                     folder.mkdir();
 
-                    File file1 = new File(folder, firstName + "_" + lastName + "_image.png");
+                    File file1 = new File(folder, firstName + "_image.png");
                     InputStream inputStream = avatarImage.getInputStream();
                     Files.copy(inputStream, file1.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 }
