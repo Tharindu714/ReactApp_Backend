@@ -106,7 +106,6 @@ public class LoadHomeData extends HttpServlet {
                 }
                 //get Last Conversation
                 jsonChatArray.add(jsonchatItem);
-
             }
             //Send User
             responseJson.addProperty("success", true);
